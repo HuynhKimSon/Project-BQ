@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <th:block th:include="include :: header('Đồng bộ MISA Danh Sách')" />
+</head>
+
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label for="invoiceDate">Ngày hóa đơn：</label>
+                                <input type="text" id="invoiceDate" class="time-input" placeholder="Ngày hóa đơn"
+                                    name="params[invoiceDate]" />
+                            </li>
+                            <li>
+                                <label for="customerName">Tên khách hàng：</label>
+                                <input type="text" id="customerName" name="customerName" />
+                            </li>
+                            <li>
+                                <label for="taxCode">Mã số thuế：</label>
+                                <input type="text" id="taxCode" name="taxCode" />
+                            </li>
+                            <li>
+                                <label for="invoiceType">Loại đơn hàng：</label>
+                                <select id="invoiceType" name="invoiceType">
+                                    <option value="">Tất cả</option>
+                                    <option value="0">Khách lẻ online</option>
+                                    <option value="1">Khách lẻ cửa hàng</option>
+                                    <option value="2">Khách sỉ</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label for="status">Trạng thái：</label>
+                                <select name="status">
+                                    <option id="status" value="">Tất cả</option>
+                                    <option value="0">Chưa làm </option>
+                                    <option value="1">Đã gửi</option>
+                                    <option value="2">Đang làm </option>
+                                    <option value="3">Thất bại </option>
+                                    <option value="4">Thành công</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label for="beginTime">Từ ngày：</label>
+                                <input type="text" id="beginTime" class="time-input" placeholder="Bắt đầu"
+                                    name="params[beginTime]" />
+                            </li>
+                            <li>
+                                <label for="endTime">Đến ngày：</label>
+                                <input type="text" id="endTime" class="time-input" placeholder="Kết thúc"
+                                    name="params[endTime]" />
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                        class="fa fa-search"></i>&nbsp;Tìm kiếm </a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                        class="fa fa-refresh"></i>&nbsp;Làm mới </a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()">
+                    <i class="glyphicon glyphicon-repeat"></i> Robot làm lại
+                </a>
+                <a class="btn btn-primary single disabled" onclick="detail()">
+                    <i class="fa fa-eye"></i> Chi tiết
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
+                    shiro:hasPermission="business:misa:remove">
+                    <i class="fa fa-remove"></i> Xóa
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:misa:export">
+                    <i class="fa fa-download"></i> Xuất excel
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: common-input" />
+    <script th:inline="javascript">
+        var removeFlag = [[${@permission.hasPermi('business:misa:remove') }]];  
+    </script>
+    <script th:src="@{/app/js/business/misa/misa.js}"></script>
+</body>
+
+</html>

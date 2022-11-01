@@ -1,0 +1,3 @@
+﻿"sched_name","trigger_name","trigger_group","job_name","job_group","description","next_fire_time","prev_fire_time","priority","trigger_state","trigger_type","start_time","end_time","calendar_name","misfire_instr","job_data"
+"IrtechScheduler","TASK_CLASS_NAME101","DEFAULT","TASK_CLASS_NAME101","DEFAULT",,1645166250000,-1,5,"PAUSED","CRON",1645166248000,0,,2,""
+"IrtechScheduler","TASK_CLASS_NAME102","DEFAULT","TASK_CLASS_NAME102","DEFAULT",,1645166250000,-1,5,"PAUSED","CRON",1645166249000,0,,2,""

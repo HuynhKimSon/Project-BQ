@@ -1,0 +1,11 @@
+<service>
+  <id>IrbotAdminBQ</id>
+  <name>IrbotAdminBQ</name>
+  <description>Run IRBot ADMIN WEB app as a Service in windows environment.</description>
+  <env name="HOME_DIR" value="D:\Project\Robot\BQ\WebAdmin\irbot-admin-bq\irbot-admin-web\irbot-admin-bq\target"/>
+  <env name="EXECUTE_FILE" value="%HOME_DIR%\irbot-admin-bq.jar" />
+  <executable>java</executable>
+  <arguments>-Xrs -Xmx256m -jar "%EXECUTE_FILE%"</arguments>
+  <logpath>%HOME_DIR%\winsw\logs</logpath>
+  <logmode>rotate</logmode>
+</service>

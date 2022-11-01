@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('Quan ly hoa donDanh sách')" />
+    <style th:inline="css">
+        #labelUpload {
+            background-color: rgb(173, 168, 177);
+            color: black;
+            padding: 0.5rem;
+            font-family: sans-serif;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        #file-chosen {
+            margin-left: 0.3rem;
+            font-family: sans-serif;
+        }
+
+        #errorText {
+            color: red;
+            font-size: 12px;
+            font-family: sans-serif;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <form id="formId">
+                <input type="hidden" name="invoiceUploadId">
+            </form>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="importExcel()">
+                    <i class="fa fa-upload"></i> Nhập hóa đơn
+                </a>
+                <a class="btn btn-info" onclick="sendRobot()">
+                    <i class="fa fa-paper-plane"></i> Gửi Robot nhập liệu
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.editTab()" shiro:hasPermission="business:invoice:edit">
+                    <i class="fa fa-edit"></i> Chi tiết
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="business:invoice:remove">
+                    <i class="fa fa-remove"></i> Xóa
+                </a>
+                <!-- <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:invoice:export">
+                    <i class="fa fa-download"></i> Xuất excel
+                </a> -->
+                <a class="btn btn-success" onclick="history()">
+                    <i class="fa fa-history"></i> Lịch sử
+                </a>
+                <a class="btn btn-warning" onclick="randomIndex()">
+                    <i class="fa fa-random"></i> Sắp xếp ngẫu nhiên
+                </a>
+                <a class="btn btn-info multiple disabled" onclick="mergeInvoices()">
+                    <i class="fa fa-exchange"></i> Gộp hóa đơn
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:src="@{/app/js/business/invoice/import.js}"></script>
+    
+</body>
+</html>

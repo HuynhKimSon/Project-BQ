@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vn.com.irtech.irbot.business.mapper.InvoiceDetailMapper">
+    
+    <resultMap type="InvoiceDetail" id="InvoiceDetailResult">
+        <result property="id"    column="id"    />
+        <result property="invoiceId"    column="invoice_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="unit"    column="unit"    />
+        <result property="qty"    column="qty"    />
+        <result property="amount"    column="amount"    />
+        <result property="price"    column="price"    />
+        <result property="taxPercent"    column="tax_percent"    />
+        <result property="taxAmount"    column="tax_amount"    />
+        <result property="channelCode"    column="channel_code"    />
+        <result property="code"    column="code"    />
+        <result property="storeCode"    column="store_code"    />
+        <result property="promotion"    column="promotion"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectInvoiceDetailVo">
+        select id, invoice_id, product_name, unit, qty, amount, price, tax_percent, tax_amount, channel_code, code, store_code, promotion, del_flag, create_by, create_time, update_by, update_time from invoice_detail
+    </sql>
+
+    <select id="selectInvoiceDetailList" parameterType="InvoiceDetail" resultMap="InvoiceDetailResult">
+        <include refid="selectInvoiceDetailVo"/>
+        <where>  
+            <if test="invoiceId != null "> and invoice_id = #{invoiceId}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="qty != null"> and qty = #{qty}</if>
+            <if test="amount != null"> and amount = #{amount}</if>
+            <if test="price != null"> and price = #{price}</if>
+            <if test="taxPercent != null"> and tax_percent = #{taxPercent}</if>
+            <if test="taxAmount != null"> and tax_amount = #{taxAmount}</if>
+            <if test="channelCode != null  and channelCode != ''"> and channel_code = #{channelCode}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="storeCode != null  and storeCode != ''"> and store_code = #{storeCode}</if>
+            <if test="promotion != null and promotion != ''"> and promotion = #{promotion}</if>
+        </where>
+    </select>
+    
+    <select id="selectInvoiceDetailById" parameterType="Long" resultMap="InvoiceDetailResult">
+        <include refid="selectInvoiceDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInvoiceDetail" parameterType="InvoiceDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into invoice_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="invoiceId != null">invoice_id,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="unit != null">unit,</if>
+            <if test="qty != null">qty,</if>
+            <if test="amount != null">amount,</if>
+            <if test="price != null">price,</if>
+            <if test="taxPercent != null">tax_percent,</if>
+            <if test="taxAmount != null">tax_amount,</if>
+            <if test="channelCode != null">channel_code,</if>
+            <if test="code != null">code,</if>
+            <if test="storeCode != null">store_code,</if>
+            <if test="promotion != null">promotion,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            create_time
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="invoiceId != null">#{invoiceId},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="price != null">#{price},</if>
+            <if test="taxPercent != null">#{taxPercent},</if>
+            <if test="taxAmount != null">#{taxAmount},</if>
+            <if test="channelCode != null">#{channelCode},</if>
+            <if test="code != null">#{code},</if>
+            <if test="storeCode != null">#{storeCode},</if>
+            <if test="promotion != null">#{promotion},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            sysdate()
+         </trim>
+    </insert>
+
+    <update id="updateInvoiceDetail" parameterType="InvoiceDetail">
+        update invoice_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="invoiceId != null">invoice_id = #{invoiceId},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="taxPercent != null">tax_percent = #{taxPercent},</if>
+            <if test="taxAmount != null">tax_amount = #{taxAmount},</if>
+            <if test="channelCode != null">channel_code = #{channelCode},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="storeCode != null">store_code = #{storeCode},</if>
+            <if test="promotion != null">promotion = #{promotion},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInvoiceDetailById" parameterType="Long">
+        delete from invoice_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteInvoiceDetailByIds" parameterType="String">
+        delete from invoice_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteInvoiceDetailByInvoiceIds" parameterType="String">
+    	delete from invoice_detail where invoice_id in
+ 			<foreach collection="array" item="invoiceId" open="(" separator="," close=")">
+ 				#{invoiceId}
+      </foreach> 
+    </delete>
+
+</mapper>

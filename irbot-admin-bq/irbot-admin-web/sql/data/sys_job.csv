@@ -1,0 +1,3 @@
+﻿"job_id","job_name","job_group","invoke_target","cron_expression","misfire_policy","concurrent","status","create_by","create_time","update_by","update_time","remark"
+101,"Đồng bộ MISA","DEFAULT","processMisaTask.executeTask()","0/30 * * * * ?","3","0","1","admin",2/8/2022 2:40:16 AM,"admin",2/13/2022 2:48:00 AM,""
+102,"Đồng bộ BRAVO","DEFAULT","processBravoTask.executeTask()","0/30 * * * * ?","3","0","1","admin",2/10/2022 7:54:50 AM,"admin",2/15/2022 9:45:00 AM,""

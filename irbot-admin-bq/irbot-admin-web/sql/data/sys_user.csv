@@ -1,0 +1,3 @@
+﻿"user_id","dept_id","login_name","user_name","user_type","email","phonenumber","sex","avatar","password","salt","status","del_flag","login_ip","login_date","pwd_update_date","create_by","create_time","update_by","update_time","remark"
+1,200,"admin","Admin","00","admin@gmail.com","0123456789","0","","29c67a30398638269fe600f73a054934","111111","0","0","113.176.195.221",2/18/2022 3:47:47 PM,12/2/2021 2:06:02 PM,"admin",12/2/2021 2:06:02 PM,"",2/18/2022 3:47:44 PM,"管理员"
+100,200,"baohv","Bao Hoang","00","","","0","","48bbb4aacd5f23e1bf7d8b8b013c38dd","9a3f94","0","0","127.0.0.1",12/3/2021 4:49:01 PM,,"admin",12/3/2021 4:42:30 PM,"admin",1/12/2022 4:17:27 AM,""

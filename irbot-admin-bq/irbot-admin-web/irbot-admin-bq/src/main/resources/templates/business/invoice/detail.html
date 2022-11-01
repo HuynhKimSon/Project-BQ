@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="include :: header('Detail Invoice')" />
+    <th:block th:include="include :: datetimepicker-css" />
+  </head>
+
+  <body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+      <form
+        class="form-horizontal m"
+        id="formDetailInvoice"
+        name="formDetailInvoice"
+        th:object="${invoice}"
+      >
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label  is-required">Ngày hóa đơn</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control time-input"
+                  type="text"
+                  name="invoiceDate"
+                  id="invoiceDate"
+                  th:value="${#dates.format(invoice.invoiceDate, 'yyyy-MM-dd')}"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Loại hóa đơn</label>
+              <div class="col-sm-8" th:switch="${invoice.type}">
+                <div th:case="0" class="label label-warning">
+                  Khách lẻ online
+                </div>
+                <div th:case="1" class="label label-success">
+                  Khách lẻ cửa hàng
+                </div>
+                <div th:case="2" class="label label-primary">Khách sỹ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Mã số thuế</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="taxCode"
+                  id="taxCode"
+                  th:field="*{taxCode}"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label is-required">Tên khách hàng</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="customerName"
+                  id="customerName"
+                  th:field="*{customerName}"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label is-required">Địa chỉ</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="address"
+                  id="address"
+                  th:field="*{address}"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label is-required">Người mua hàng</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="buyer"
+                  id="buyer"
+                  th:field="*{buyer}"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Thời gian nhập liệu</label>
+              <div class="col-sm-8" th:switch="*{modeRun}">
+                <input
+                  th:case="0"
+                  class="form-control"
+                  type="text"
+                  name="modeRun"
+                  id="modeRun"
+                  value="Ngẫu nhiên trong ngày"
+                  disabled
+                />
+                <input
+                  th:case="1"
+                  class="form-control"
+                  type="text"
+                  name="modeRun"
+                  id="modeRun"
+                  value="Ngay lập tức"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group" th:if="*{modeRun == 0}">
+              <label class="col-sm-4 control-label">Ngày xuất hóa đơn</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="planStartDate"
+                  id="planStartDate"
+                  th:value="${#dates.format(invoice.planStartDate, 'yyyy-MM-dd HH:mm:ss')}"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">     
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Số hóa đơn</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="invoiceNo"
+                  id="invoiceNo"
+                  th:field="*{invoiceNo}"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Mã kênh đối tượng</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="channelCode"
+                  id="channelCode"
+                  th:value="${details[0].channelCode}"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Ngày Import</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="createTime"
+                  id="createTime"
+                  readonly="true"
+                  th:value="${#dates.format(invoice.createTime, 'yyyy-MM-dd HH:mm:ss')}"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Người Import</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="createBy"
+                  id="createBy"
+                  readonly="true"
+                  th:field="*{createBy}"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="row">
+        <div class="col-sm-offset-6 col-sm-6">
+            <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i
+                    class="fa fa-reply-all"></i>&nbsp;Đóng</button>
+        </div>
+      </div>
+      
+     <div class="row">
+        <div class="col-sm-12">
+            <table id="bootstrap-table"></table>
+        </div>
+     </div>
+    </div>
+    
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script type="text/javascript" th:inline="javascript">
+      var invoice = /*[[${invoice}]]*/;
+      var details = /*[[${details}]]*/;
+    </script>
+    <script th:src="@{/app/js/business/invoice/detail.js}"></script>
+  </body>
+</html>

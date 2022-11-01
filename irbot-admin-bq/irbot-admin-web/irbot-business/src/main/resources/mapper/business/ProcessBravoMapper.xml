@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="vn.com.irtech.irbot.business.mapper.ProcessBravoMapper">
+
+	<resultMap type="ProcessBravo" id="ProcessBravoResult">
+		<result property="id" column="id" />
+		<result property="invoiceId" column="invoice_id" />
+		<result property="invoiceType" column="invoice_type" />
+		<result property="taxCode" column="tax_code" />
+		<result property="customerName" column="customer_name" />
+		<result property="invoiceDate" column="invoice_date" />
+		<result property="invoiceNo" column="invoice_no" />
+		<result property="delFlag" column="del_flag" />
+		<result property="status" column="status" />
+		<result property="error" column="error" />
+		<result property="dataRequest" column="data_request" />
+		<result property="dataResponse" column="data_response" />
+		<result property="robotUuid" column="robot_uuid" />
+		<result property="startDate" column="start_date" />
+		<result property="endDate" column="end_date" />
+		<result property="createBy" column="create_by" />
+		<result property="createTime" column="create_time" />
+		<result property="updateBy" column="update_by" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+
+	<sql id="selectProcessBravoVo">
+		select id, invoice_id, invoice_type, tax_code, customer_name,
+		invoice_date, invoice_no,
+		del_flag, status, error, data_request,
+		data_response, robot_uuid,
+		start_date, end_date, create_by,
+		create_time, update_by, update_time
+		from process_bravo
+	</sql>
+
+	<select id="selectProcessBravoList" parameterType="ProcessBravo"
+		resultMap="ProcessBravoResult">
+		<include refid="selectProcessBravoVo" />
+		<where>
+			<if test="invoiceId != null "> and invoice_id = #{invoiceId}</if>
+			<if test="invoiceType != null "> and invoice_type = #{invoiceType}</if>
+			<if test="taxCode != null  and taxCode != ''"> and tax_code like concat('%', #{taxCode}, '%')</if>
+			<if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')
+			</if>
+			<if test="invoiceDate != null "> and invoice_date = #{invoiceDate}</if>
+			<if test="invoiceNo != null  and invoiceNo != ''"> and invoice_no = #{invoiceNo}</if>
+			<if test="status != null "> and status = #{status}</if>
+			<if test="error != null  and error != ''"> and error = #{error}</if>
+			<if test="dataRequest != null  and dataRequest != ''"> and data_request = #{dataRequest}</if>
+			<if test="dataResponse != null  and dataResponse != ''"> and data_response = #{dataResponse}</if>
+			<if test="robotUuid != null  and robotUuid != ''"> and robot_uuid = #{robotUuid}</if>
+			<if test="startDate != null "> and start_date = #{startDate}</if>
+			<if test="endDate != null "> and end_date = #{endDate}</if>
+			<if test="params.invoiceDate != null and params.invoiceDate != ''">
+				AND date_format(invoice_date,'%y%m%d') =
+				date_format(#{params.invoiceDate},'%y%m%d')
+			</if>
+			<if test="params.beginTime != null and params.beginTime != ''">
+				AND date_format(start_date,'%y%m%d') &gt;=
+				date_format(#{params.beginTime},'%y%m%d')
+			</if>
+			<if test="params.endTime != null and params.endTime != ''">
+				AND date_format(start_date,'%y%m%d') &lt;=
+				date_format(#{params.endTime},'%y%m%d')
+			</if>
+		</where>
+		
+	</select>
+
+	<select id="selectProcessBravoById" parameterType="Long"
+		resultMap="ProcessBravoResult">
+		<include refid="selectProcessBravoVo" />
+		where id = #{id}
+	</select>
+
+	<insert id="insertProcessBravo" parameterType="ProcessBravo"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into process_bravo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="invoiceId != null">invoice_id,</if>
+			<if test="invoiceType != null">invoice_type,</if>
+			<if test="taxCode != null">tax_code,</if>
+			<if test="customerName != null">customer_name,</if>
+			<if test="invoiceDate != null">invoice_date,</if>
+			<if test="invoiceNo != null">invoice_no,</if>
+			<if test="delFlag != null">del_flag,</if>
+			<if test="status != null">status,</if>
+			<if test="error != null">error,</if>
+			<if test="dataRequest != null">data_request,</if>
+			<if test="dataResponse != null">data_response,</if>
+			<if test="robotUuid != null">robot_uuid,</if>
+			<if test="startDate != null">start_date,</if>
+			<if test="endDate != null">end_date,</if>
+			<if test="createBy != null">create_by,</if>
+			<if test="updateBy != null">update_by,</if>
+			<if test="updateTime != null">update_time,</if>
+			create_time
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="invoiceId != null">#{invoiceId},</if>
+			<if test="invoiceType != null">#{invoiceType},</if>
+			<if test="taxCode != null">#{taxCode},</if>
+			<if test="customerName != null">#{customerName},</if>
+			<if test="invoiceDate != null">#{invoiceDate},</if>
+			<if test="invoiceNo != null">#{invoiceNo},</if>
+			<if test="delFlag != null">#{delFlag},</if>
+			<if test="status != null">#{status},</if>
+			<if test="error != null">#{error},</if>
+			<if test="dataRequest != null">#{dataRequest},</if>
+			<if test="dataResponse != null">#{dataResponse},</if>
+			<if test="robotUuid != null">#{robotUuid},</if>
+			<if test="startDate != null">#{startDate},</if>
+			<if test="endDate != null">#{endDate},</if>
+			<if test="createBy != null">#{createBy},</if>
+			<if test="updateBy != null">#{updateBy},</if>
+			<if test="updateTime != null">#{updateTime},</if>
+			sysdate()
+		</trim>
+	</insert>
+
+	<update id="updateProcessBravo" parameterType="ProcessBravo">
+		update process_bravo
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="invoiceId != null">invoice_id = #{invoiceId},</if>
+			<if test="invoiceType != null">invoice_type = #{invoiceType},</if>
+			<if test="taxCode != null">tax_code = #{taxCode},</if>
+			<if test="customerName != null">customer_name = #{customerName},</if>
+			<if test="invoiceDate != null">invoice_date = #{invoiceDate},</if>
+			<if test="invoiceNo != null">invoice_no = #{invoiceNo},</if>
+			<if test="delFlag != null">del_flag = #{delFlag},</if>
+			<if test="status != null">status = #{status},</if>
+			<if test="error != null">error = #{error},</if>
+			<if test="params.resetError != null">error = NULL,</if>
+			<if test="dataRequest != null">data_request = #{dataRequest},</if>
+			<if test="dataResponse != null">data_response = #{dataResponse},</if>
+			<if test="robotUuid != null">robot_uuid = #{robotUuid},</if>
+			<if test="startDate != null">start_date = #{startDate},</if>
+			<if test="endDate != null">end_date = #{endDate},</if>
+			<if test="params.resetEndDate != null">end_date = NULL,</if>
+			<if test="createBy != null">create_by = #{createBy},</if>
+			<if test="createTime != null">create_time = #{createTime},</if>
+			<if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate()
+
+		</trim>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteProcessBravoById" parameterType="Long">
+		delete from
+		process_bravo where id = #{id}
+	</delete>
+
+	<delete id="deleteProcessBravoByIds" parameterType="String">
+		delete from process_bravo where id in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteProcessBravoByInvoiceIds" parameterType="String">
+   	delete from process_bravo where invoice_id in
+			<foreach collection="array" item="invoiceId" open="(" separator="," close=")">
+				#{invoiceId}
+     </foreach> 
+   </delete>
+</mapper>

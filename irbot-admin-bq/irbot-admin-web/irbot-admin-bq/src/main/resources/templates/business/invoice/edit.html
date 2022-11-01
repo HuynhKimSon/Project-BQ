@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="include :: header('Detail Invoice')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <style th:inline="css">
+      #errorInvoiceDate {
+        color: red;
+        font-size: 12px;
+        font-family: sans-serif;
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+      <form
+        class="form-horizontal m"
+        id="formDetailInvoice"
+        name="formDetailInvoice"
+        th:object="${invoice}"
+      >
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label  is-required">Ngày hóa đơn</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control time-input"
+                  type="text"
+                  name="invoiceDate"
+                  id="invoiceDate"
+                  th:value="${#dates.format(invoice.invoiceDate, 'yyyy-MM-dd')}"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Loại hóa đơn</label>
+              <div class="col-sm-8" th:switch="${invoice.type}">
+                <div th:case="0" class="label label-warning">
+                  Khách lẻ online
+                </div>
+                <div th:case="1" class="label label-success">
+                  Khách lẻ cửa hàng
+                </div>
+                <div th:case="2" class="label label-primary">Khách sỹ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Mã số thuế</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="taxCode"
+                  id="taxCode"
+                  th:field="*{taxCode}"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label is-required">Tên khách hàng</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="customerName"
+                  id="customerName"
+                  th:field="*{customerName}"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label is-required">Địa chỉ</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="address"
+                  id="address"
+                  th:field="*{address}"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label is-required">Người mua hàng</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="buyer"
+                  id="buyer"
+                  th:field="*{buyer}"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Tổng thanh toán</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="totalAmount"
+                  id="totalAmount"
+                  th:field="*{totalAmount}"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Chênh lệch</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control text-danger"
+                  type="text"
+                  name="diff"
+                  id="diff"
+                  th:field="*{diff}"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Thời gian nhập liệu</label>
+              <div class="col-sm-8">
+                <div>
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="rdoModeRun"
+                    id="rdoModeRun1"
+                    value="0"
+                    th:checked="${invoice.modeRun == 0}"
+                  />
+                  <label class="form-check-label" for="rdoModeRun1">
+                    Ngẫu nhiên trong ngày
+                  </label>
+                </div>
+                <div>
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="rdoModeRun"
+                    id="rdoModeRun2"
+                    value="1"
+                    th:checked="${invoice.modeRun == 1}"
+                  />
+                  <label class="form-check-label" for="rdoModeRun2">
+                    Ngay lập tức
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Mã kênh đối tượng</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="channelCode"
+                  id="channelCode"
+                  th:value="${details[0].channelCode}"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Ngày xuất hóa đơn</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="planStartDate"
+                  id="planStartDate"
+                  th:value="${#dates.format(invoice.planStartDate, 'yyyy-MM-dd HH:mm:ss')}"
+                />
+                <p id="errorInvoiceDate"></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Số hóa đơn</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="invoiceNo"
+                  id="invoiceNo"
+                  th:field="*{invoiceNo}"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Ngày Import</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="createTime"
+                  id="createTime"
+                  readonly="true"
+                  th:value="${#dates.format(invoice.createTime, 'yyyy-MM-dd HH:mm:ss')}"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Người Import</label>
+              <div class="col-sm-8">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="createBy"
+                  id="createBy"
+                  readonly="true"
+                  th:field="*{createBy}"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="row">
+        <div class="col-sm-offset-5 col-sm-10">
+            <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i
+                    class="fa fa-check"></i>Xác nhận</button>&nbsp;
+            <button type="button" class="btn btn-sm btn-danger" onclick="closeInv()"><i
+                    class="fa fa-reply-all"></i>Đóng</button>
+        </div>
+      </div>
+      
+     <div class="row">
+        <div class="col-sm-12">
+            <table id="bootstrap-table"></table>
+        </div>
+     </div>
+    </div>
+    
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script type="text/javascript" th:inline="javascript">
+      var invoice = /*[[${invoice}]]*/;
+      var details = /*[[${details}]]*/;
+    </script>
+    <script th:src="@{/app/js/business/invoice/edit.js}"></script>
+  </body>
+</html>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vn.com.irtech.irbot.business.mapper.InvoiceMapper">
+    
+    <resultMap type="Invoice" id="InvoiceResult">
+        <result property="id"    column="id"    />
+        <result property="invoiceUploadId"    column="invoice_upload_id"    />
+        <result property="type"    column="type"    />
+        <result property="taxCode"    column="tax_code"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="address"    column="address"    />
+        <result property="buyer"    column="buyer"    />
+        <result property="invoiceDate"    column="invoice_date"    />
+        <result property="modeRun"    column="mode_run"    />
+        <result property="planStartDate"    column="plan_start_date"    />
+        <result property="status"    column="status"    />
+        <result property="statusMisa"    column="status_misa"    />
+        <result property="statusBravo"    column="status_bravo"    />
+        <result property="invoiceNo"    column="invoice_no"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="randomIndex"    column="random_index"    />
+    </resultMap>
+    
+    <resultMap type="InvoiceInfo" id="InvoiceInfoResult">
+        <result property="id"    column="id"    />
+        <result property="invoiceUploadId"    column="invoice_upload_id"    />
+        <result property="type"    column="type"    />
+        <result property="taxCode"    column="tax_code"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="address"    column="address"    />
+        <result property="buyer"    column="buyer"    />
+        <result property="invoiceDate"    column="invoice_date"    />
+        <result property="modeRun"    column="mode_run"    />
+        <result property="planStartDate"    column="plan_start_date"    />
+        <result property="status"    column="status"    />
+        <result property="statusMisa"    column="status_misa"    />
+        <result property="statusBravo"    column="status_bravo"    />
+        <result property="invoiceNo"    column="invoice_no"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="totalProduct"    column="total_product"    />
+        <result property="totalAmount"    column="total_amount"    />
+        <result property="totalAmountExactly"    column="total_amount_exactly"    />
+        <result property="processMisaId"    column="process_misa_id"    />
+        <result property="processBravoId"    column="process_bravo_id"    />
+        <result property="randomIndex"    column="random_index"    />
+    </resultMap>
+
+    <sql id="selectInvoiceVo">
+        select id, invoice_upload_id, type, tax_code, customer_name, address, buyer, invoice_date, mode_run, plan_start_date,
+        status, status_misa, status_bravo, invoice_no, del_flag, create_by, create_time, update_by, update_time, random_index from invoice
+    </sql>
+
+    <select id="selectInvoiceList" parameterType="Invoice" resultMap="InvoiceResult">
+        <include refid="selectInvoiceVo"/>
+        <where>  
+        	<if test="invoiceUploadId != null "> and invoice_upload_id = #{invoiceUploadId}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="taxCode != null  and taxCode != ''"> and tax_code = #{taxCode}</if>
+            <if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="buyer != null  and buyer != ''"> and buyer = #{buyer}</if>
+            <if test="invoiceDate != null "> and invoice_date = #{invoiceDate}</if>
+            <if test="planStartDate != null "> and plan_start_date = #{planStartDate}</if>
+            <if test="modeRun != null "> and mode_run = #{modeRun}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="statusMisa != null "> and status_misa = #{statusMisa}</if>
+            <if test="statusBravo != null "> and status_bravo = #{statusBravo}</if>
+            <if test="invoiceNo != null  and invoiceNo != ''"> and invoice_no = #{invoiceNo}</if>
+            <if test="randomIndex != null "> and random_index = #{randomIndex}</if>
+        </where>
+        ORDER BY plan_start_date ASC, random_index ASC, id ASC
+    </select>
+    
+    <select id="selectInvoiceById" parameterType="Long" resultMap="InvoiceResult">
+        <include refid="selectInvoiceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInvoice" parameterType="Invoice" useGeneratedKeys="true" keyProperty="id">
+        insert into invoice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+        	<if test="invoiceUploadId != null">invoice_upload_id,</if>
+            <if test="type != null">type,</if>
+            <if test="taxCode != null">tax_code,</if>
+            <if test="customerName != null">customer_name,</if>
+            <if test="address != null">address,</if>
+            <if test="buyer != null">buyer,</if>
+            <if test="invoiceDate != null">invoice_date,</if>
+            <if test="planStartDate != null">plan_start_date,</if>
+            <if test="modeRun != null">mode_run,</if>
+            <if test="status != null">status,</if>
+            <if test="statusMisa != null">status_misa,</if>
+            <if test="statusBravo != null">status_bravo,</if>
+            <if test="invoiceNo != null">invoice_no,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="randomIndex != null">random_index,</if>
+            create_time
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="invoiceUploadId != null">#{invoiceUploadId},</if>
+             <if test="type != null">#{type},</if>
+            <if test="taxCode != null">#{taxCode},</if>
+            <if test="customerName != null">#{customerName},</if>
+            <if test="address != null">#{address},</if>
+            <if test="buyer != null">#{buyer},</if>
+            <if test="invoiceDate != null">#{invoiceDate},</if>
+            <if test="planStartDate != null">#{planStartDate},</if>
+            <if test="modeRun != null">#{modeRun},</if>
+            <if test="status != null">#{status},</if>
+            <if test="statusMisa != null">#{statusMisa},</if>
+            <if test="statusBravo != null">#{statusBravo},</if>
+            <if test="invoiceNo != null">#{invoiceNo},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="randomIndex != null">#{randomIndex},</if>
+            sysdate()
+         </trim>
+    </insert>
+
+    <update id="updateInvoice" parameterType="Invoice">
+        update invoice
+        <trim prefix="SET" suffixOverrides=",">
+         	<if test="invoiceUploadId != null">invoice_upload_id = #{invoiceUploadId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="taxCode != null">tax_code = #{taxCode},</if>
+            <if test="customerName != null">customer_name = #{customerName},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="buyer != null">buyer = #{buyer},</if>
+            <if test="invoiceDate != null">invoice_date = #{invoiceDate},</if>
+            <if test="planStartDate != null">plan_start_date = #{planStartDate},</if>
+            <if test="modeRun != null">mode_run = #{modeRun},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="statusMisa != null">status_misa = #{statusMisa},</if>
+            <if test="statusBravo != null">status_bravo = #{statusBravo},</if>
+            <if test="invoiceNo != null">invoice_no = #{invoiceNo},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="randomIndex != null">random_index = #{randomIndex},</if>
+            update_time = sysdate()
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInvoiceById" parameterType="Long">
+        delete from invoice where id = #{id}
+    </delete>
+
+    <delete id="deleteInvoiceByIds" parameterType="String">
+        delete from invoice where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <select id="selectInvoiceInfoList" parameterType="Invoice" resultMap="InvoiceInfoResult">
+        select
+        	invoice.*,
+        	(select count(*) from invoice_detail where invoice_id = invoice.id) total_product,
+        	( select sum(amount + tax_amount) from invoice_detail where invoice_id = invoice.id ) total_amount , 
+            ( select round(sum((amount * (tax_percent/100)) + amount), 0) from invoice_detail where invoice_id = invoice.id ) total_amount_exactly,
+        	(select id from process_misa where invoice_id = invoice.id limit 1) process_misa_id,
+			(select id from process_bravo where invoice_id = invoice.id limit 1) process_bravo_id
+        from invoice
+        <where>  
+        	<if test="id != null "> and id = #{id}</if>
+        	<if test="invoiceUploadId != null "> and invoice_upload_id = #{invoiceUploadId}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="taxCode != null  and taxCode != ''"> and tax_code = #{taxCode}</if>
+            <if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="buyer != null  and buyer != ''"> and buyer = #{buyer}</if>
+            <if test="invoiceDate != null "> and invoice_date = #{invoiceDate}</if>
+            <if test="planStartDate != null "> and plan_start_date = #{planStartDate}</if>
+            <if test="modeRun != null "> and mode_run = #{modeRun}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="statusMisa != null "> and status_misa = #{statusMisa}</if>
+            <if test="statusBravo != null "> and status_bravo = #{statusBravo}</if>
+            <if test="invoiceNo != null  and invoiceNo != ''"> and invoice_no = #{invoiceNo}</if>
+            <if test="params.beginTime != null and params.beginTime != ''">
+            	AND date_format(plan_start_date,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+				AND date_format(plan_start_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+			</if>
+			<if test="randomIndex != null "> and random_index = #{randomIndex}</if>
+        </where>
+        ORDER BY plan_start_date ASC, random_index ASC, id ASC
+    </select>
+
+</mapper>

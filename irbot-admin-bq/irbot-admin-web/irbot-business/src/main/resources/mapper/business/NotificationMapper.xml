@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vn.com.irtech.irbot.business.mapper.NotificationMapper">
+    
+    <resultMap type="Notification" id="NotificationResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="type"    column="type"    />
+        <result property="seenFlag"    column="seen_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectNotificationVo">
+        select id, title, content, type, seen_flag, create_by, create_time, update_by, update_time from notification
+    </sql>
+
+    <select id="selectNotificationList" parameterType="Notification" resultMap="NotificationResult">
+        <include refid="selectNotificationVo"/>
+        <where>  
+            <if test="title != null  and title != ''">and lower(title) like lower(concat('%', #{title}, '%'))</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="seenFlag != null  and seenFlag != ''"> and seen_flag = #{seenFlag}</if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+    
+    <select id="selectNotificationById" parameterType="Long" resultMap="NotificationResult">
+        <include refid="selectNotificationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNotification" parameterType="Notification" useGeneratedKeys="true" keyProperty="id">
+        insert into notification
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="type != null">type,</if>
+            <if test="seenFlag != null">seen_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            create_time
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="type != null">#{type},</if>
+            <if test="seenFlag != null">#{seenFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            sysdate()
+         </trim>
+    </insert>
+
+    <update id="updateNotification" parameterType="Notification">
+        update notification
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="seenFlag != null">seen_flag = #{seenFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </trim>
+        where id = #{id}
+    </update>
+    
+    <update id="viewAllNotification">
+        update notification
+        set seen_flag = '1'
+        where seen_flag = '0'
+    </update>
+
+    <delete id="deleteNotificationById" parameterType="Long">
+        delete from notification where id = #{id}
+    </delete>
+    
+    <delete id="removeAll">
+        delete from notification
+    </delete>
+
+    <delete id="deleteNotificationByIds" parameterType="String">
+        delete from notification where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

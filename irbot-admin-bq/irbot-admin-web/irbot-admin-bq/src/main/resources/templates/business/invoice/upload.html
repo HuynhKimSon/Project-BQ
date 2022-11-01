@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+>
+  <head>
+    <th:block th:include="include :: header('Upload hoa don')" />
+    <style th:inline="css">
+      #labelUpload {
+        background-color: #1c84c6;
+        border-color: #1c84c6;
+        color: #ffffff;
+        padding: 0.5rem;
+        font-family: sans-serif;
+        border-radius: 0.3rem;
+        cursor: pointer;
+        margin-top: 1rem;
+      }
+
+      #file-chosen {
+        margin-left: 0.3rem;
+        font-family: sans-serif;
+      }
+
+      #errorFile,
+      #errorInvoiceDate {
+        color: red;
+        font-size: 12px;
+        font-family: sans-serif;
+        font-style: italic;
+      }
+
+      .pl0 {
+        padding-left: 0;
+      }
+    </style>
+  </head>
+  <body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+      <form class="form-horizontal m" enctype="multipart/form-data">
+        <div class="form-group">
+          <label class="col-sm-3 control-label font-bold is-required pl0">
+            Loại hóa đơn
+          </label>
+          <div class="col-sm-9">
+            <div class="row">
+              <div class="col-sm-4 form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="rdoInvoiceType"
+                  id="rdoInvoiceType1"
+                  value="0"
+                  checked
+                />
+                <label class="form-check-label" for="rdoInvoiceType1">
+                  Khách lẻ online
+                </label>
+              </div>
+              <div class="col-sm-4 form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="rdoInvoiceType"
+                  id="rdoInvoiceType2"
+                  value="1"
+                />
+                <label class="form-check-label" for="rdoInvoiceType2">
+                  Khách lẻ cửa hàng
+                </label>
+              </div>
+              <div class="col-sm-4 form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="rdoInvoiceType"
+                  id="rdoInvoiceType3"
+                  value="2"
+                />
+                <label class="form-check-label" for="rdoInvoiceType3">
+                  Khách sỹ
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group mt20">
+          <label class="col-sm-3 control-label font-bold is-required pl0">
+            Thời gian nhập liệu
+          </label>
+          <div class="col-sm-9">
+            <div class="row">
+              <div class="col-sm-4 form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="rdoModeRun"
+                  id="rdoModeRun1"
+                  value="0"
+                  checked
+                />
+                <label class="form-check-label" for="rdoModeRun1">
+                  Ngẫu nhiên trong ngày
+                </label>
+              </div>
+              <div class="col-sm-4 form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="rdoModeRun"
+                  id="rdoModeRun2"
+                  value="1"
+                />
+                <label class="form-check-label" for="rdoModeRun2">
+                  Ngay lập tức
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ngay xuat hoa don -->
+        <div class="form-group mt20">
+          <label class="col-sm-3 control-label font-bold is-required pl0">
+            Ngày hóa đơn
+          </label>
+          <div class="col-sm-9">
+            <div class="row">
+              <input
+                type="text"
+                id="invoiceDate"
+                class="time-input"
+                placeholder="Ngày xuất hóa đơn"
+                name="invoiceDate"
+              />
+              <label
+                class="control-label font-bold is-required pl-2"
+                style="margin-left: 10px"
+              >
+                Hẹn giờ:
+              </label>
+              <select name="startHour" id="startHour">
+                <option value="8" selected>8:00</option>
+                <option value="9">9:00</option>
+                <option value="10">10:00</option>
+                <option value="11">11:00</option>
+                <option value="12">12:00</option>
+                <option value="13">13:00</option>
+                <option value="14">14:00</option>
+                <option value="15">15:00</option>
+                <option value="16">16:00</option>
+                <option value="17">17:00</option>
+                <option value="18">18:00</option>
+                <option value="19">19:00</option>
+                <option value="20">20:00</option>
+                <option value="21">21:00</option>
+              </select>
+              <label>&nbsp;-&nbsp;</label>
+              <select name="endHour" id="endHour">
+                <option value="8">8:00</option>
+                <option value="9">9:00</option>
+                <option value="10">10:00</option>
+                <option value="11">11:00</option>
+                <option value="12">12:00</option>
+                <option value="13">13:00</option>
+                <option value="14">14:00</option>
+                <option value="15">15:00</option>
+                <option value="16">16:00</option>
+                <option value="17">17:00</option>
+                <option value="18">18:00</option>
+                <option value="19">19:00</option>
+                <option value="20">20:00</option>
+                <option value="21" selected>21:00</option>
+              </select>
+            </div>
+
+            <p id="errorInvoiceDate"></p>
+          </div>
+        </div>
+
+        <div class="form-group mt20">
+          <label class="col-sm-3 control-label font-bold is-required pl0">
+            Chọn file
+          </label>
+          <div class="col-sm-9">
+            <!-- actual upload which is hidden -->
+            <input
+              type="file"
+              id="file"
+              name="file"
+              onchange="handleFileChange()"
+              class="hidden"
+              accept=".xlsx,.xls"
+            />
+            <!-- our custom upload button -->
+            <label for="file" id="labelUpload">Chọn file</label>
+            <!-- name of file chosen -->
+            <span id="file-chosen">Chưa chọn file</span>
+            <p id="errorFile"></p>
+          </div>
+        </div>
+
+        <div class="form-group mt20">
+          <label class="col-sm-3"></label>
+          <div class="col-sm-9">
+            <a onclick="downloadTemplate()" class="btn btn-default btn-xs"
+              ><i class="fa fa-file-excel-o"></i> Tải file mẫu</a
+            >
+          </div>
+        </div>
+
+        <div class="form-group mt20">
+          <label class="col-sm-3"></label>
+          <div class="text-danger col-sm-9">
+            <p>Lưu ý:</p>
+            <p>&nbsp; + Chỉ cho phép upload file ".xls" hoặc ".xlsx".</p>
+            <p>&nbsp; + Ngày xuất hóa đơn phải sau hoặc bằng ngày hiện tại.</p>
+            <p>
+              &nbsp; + Trường hợp loại hóa đơn là khách lẻ cửa hàng thì có xử lý
+              tách hóa đơn.
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group mt20">
+          <label class="col-sm-3 control-label font-bold is-required pl0"
+            >Lỗi file</label
+          >
+          <div class="text-danger col-sm-9" id="errorsText"></div>
+        </div>
+      </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:src="@{/app/js/business/invoice/upload.js}"></script>
+  </body>
+</html>

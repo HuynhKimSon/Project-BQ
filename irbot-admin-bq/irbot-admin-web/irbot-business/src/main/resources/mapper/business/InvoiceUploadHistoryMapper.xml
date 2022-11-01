@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vn.com.irtech.irbot.business.mapper.InvoiceUploadHistoryMapper">
+    
+    <resultMap type="InvoiceUploadHistory" id="InvoiceUploadHistoryResult">
+        <result property="id"    column="id"    />
+        <result property="invoiceType"    column="invoice_type"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectInvoiceUploadHistoryVo">
+        select id, invoice_type, file_name, file_path, create_by, create_time, update_by, update_time from invoice_upload_history
+    </sql>
+
+    <select id="selectInvoiceUploadHistoryList" parameterType="InvoiceUploadHistory" resultMap="InvoiceUploadHistoryResult">
+        <include refid="selectInvoiceUploadHistoryVo"/>
+        <where>  
+            <if test="invoiceType != null "> and invoice_type = #{invoiceType}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="filePath != null  and filePath != ''"> and file_path = #{filePath}</if>
+            <if test="params.createTime != null and params.createTime != ''">
+							AND date_format(create_time,'%y%m%d') =
+							date_format(#{params.createTime},'%y%m%d')
+						</if>
+        </where>
+        <if test="params.orderByIdDesc != null">ORDER BY id DESC</if>
+    </select>
+    
+    <select id="selectInvoiceUploadHistoryById" parameterType="Long" resultMap="InvoiceUploadHistoryResult">
+        <include refid="selectInvoiceUploadHistoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInvoiceUploadHistory" parameterType="InvoiceUploadHistory" useGeneratedKeys="true" keyProperty="id">
+        insert into invoice_upload_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="invoiceType != null">invoice_type,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="filePath != null">file_path,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            create_time
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="invoiceType != null">#{invoiceType},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="filePath != null">#{filePath},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            	sysdate()
+         </trim>
+    </insert>
+
+    <update id="updateInvoiceUploadHistory" parameterType="InvoiceUploadHistory">
+        update invoice_upload_history
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="invoiceType != null">invoice_type = #{invoiceType},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="filePath != null">file_path = #{filePath},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            	update_time = sysdate()
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInvoiceUploadHistoryById" parameterType="Long">
+        delete from invoice_upload_history where id = #{id}
+    </delete>
+
+    <delete id="deleteInvoiceUploadHistoryByIds" parameterType="String">
+        delete from invoice_upload_history where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
